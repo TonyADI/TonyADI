@@ -1,5 +1,5 @@
 - 👋 Hi, I’m @TonyADI
-- 🌱 I’m currently working on a project that utilizes React, Express, MySQL, and NodeJs.
+- 🌱 I’m currently working on a [project](https://github.com/TonyADI/tonyadi.github.io/tree/master/React%20Apps/project) that utilizes React, Express, MySQL, and NodeJs.
 - The project is currently called Augeo which is latin for enlarge/expand. 
 - It allows users to create products which other users can then bid on.
 - The products have a duration which gives a sense of urgency to the whole thing.
