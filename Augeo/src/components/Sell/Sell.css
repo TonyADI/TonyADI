@@ -1,0 +1,55 @@
+#sell-body #search-bar{
+    margin:auto;
+    width: 50vw;
+    text-align: left;
+}
+
+#searchbar-heading{
+    margin-top: 30vh;
+    text-align: center;
+}
+
+#sample-listing > div.product-container{
+    width: 100% !important;
+    margin: 0px;
+    border: 0px;
+}
+
+#result-container{
+    position: fixed;
+    left: 0;
+    top: 0px;
+    width: 100%;
+    border: 1px solid #000;
+    background-color: #555;
+    background-color: rgba(0,0,0,0.3);
+    z-index: 1;
+    padding-bottom: 200px;
+}
+
+#sample-flex{
+    flex: 0.5;
+    margin: 100px;
+    margin-right: 0px;
+    background-color: #fff;
+    border-right: 0.5px solid #555;
+    border-radius: 5px 5px 0px 0px;
+}
+
+#form-flex{
+    flex: 0.5;
+    margin: 100px;
+    margin-left: 0px;
+    background-color: #fff;
+    font-size: 20px;
+    position: relative;
+}
+#form-flex .input-container{
+    margin: 40px 0px;
+}
+#form-flex .button{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 0px;
+}

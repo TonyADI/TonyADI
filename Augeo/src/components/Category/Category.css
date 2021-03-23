@@ -1,0 +1,11 @@
+.category-container{
+    display: inline-block;
+    margin: 15px;
+    width: 116px;
+}
+
+.category-background{
+    border-radius: 50%;
+    background-color: rgb(233, 245, 252);
+    padding: 20px;
+}

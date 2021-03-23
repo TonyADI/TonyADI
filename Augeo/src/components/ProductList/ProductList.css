@@ -1,0 +1,80 @@
+.product-carousel{
+    width: 1290px;
+    margin: 50px auto;
+    position: relative;
+}
+
+@media screen and (max-width: 768px){
+    .product-carousel{
+        width:80%;
+    }
+}
+
+@media screen and (max-width: 1024px){
+    .product-carousel{
+        width:85%;
+    }
+}
+
+@media screen and (max-width: 1440px){
+    .product-carousel{
+        width:90%;
+    }
+}
+
+.product-carousel .carousel-inner{
+    overflow: hidden;
+}
+
+.product-carousel .track{
+    display: inline-flex;
+    transition: transform 0.1s;
+    padding-bottom: 10px;
+}
+
+.product-carousel .card-container {
+    width: 217px;
+    flex-shrink: 0;
+    height: 250px;
+    box-sizing: border-box;
+}
+
+.product-carousel .card-container .card{
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+
+.carousel-nav button{
+    width: 60px;
+    height: 60px;
+    background-color: rgb(255, 255, 255, 0);
+    border: 0px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.carousel-nav .direction-icon{
+    font-size: 40px;
+    transition: font-size 0.3s;
+}
+
+.carousel-nav .direction-icon:hover{
+    font-size: 50px;
+}
+
+.carousel-nav .prev:focus, .carousel-nav .next:focus{
+    outline: none;
+}
+
+.carousel-nav .next{
+    right: -30px;
+    display: none;
+}
+
+.carousel-nav .prev{
+    left: -30px;
+    display: none;
+}

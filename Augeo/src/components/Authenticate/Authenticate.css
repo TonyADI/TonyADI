@@ -1,0 +1,19 @@
+#authenticate-form{
+    width: 80%;
+    margin: auto;
+}
+  
+#authenticate-container{
+    height: 60vh;
+    width: 30%;
+    margin: auto;
+    border-radius: 5px;
+}
+
+#authenticate-container .input-container{
+    position: relative;
+}
+
+#authenticate-container #terms{
+    font-size: 12px;
+}
