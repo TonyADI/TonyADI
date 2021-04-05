@@ -16,6 +16,7 @@ I do not intend to make this an actual platform/website rather I am using it as 
 - Users can view their listings, bids and purchases in the account page.
 - Users cannot view their own listings on the home or browse page.
 - Users can modify their personal details and password.
+- Improved security in server and backend.
 
 ## Future Functionalities
 - New categories can be added but they would need to be authorized first.
@@ -25,5 +26,4 @@ I do not intend to make this an actual platform/website rather I am using it as 
 - Archive a listing if it has no current bids, and archive a listing that has been purchased.
 - Delete expired bid records upon the users request.
 - A robust search functionality for a product list.
-- Improved security in server and backend.
 - A minimum and maximum constraint will be placed on the product prices.
