@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { Category } from '../Category/Category';
 import { CategoryList } from '../CategoryList/CategoryList';
 import { Product } from '../Product/Product';
 import { SearchBar } from '../SearchBar/SearchBar';
 import { createData, retrieveData } from '../../utilities/projectAPI';
+import 'react-notifications/lib/notifications.css';
 import './Sell.css';
 
 export const Sell = props => {
@@ -21,6 +23,7 @@ export const Sell = props => {
     }
 
     const addNewCategory = () => {
+        NotificationManager.info('Currently Unavailable.');
     }
 
     const canSubmit = () => {
@@ -61,13 +64,15 @@ export const Sell = props => {
 
 
     const createListing = e => {
-        const data = {category: category, email: props.account, buy_now: buyNow,
+        const data = {category: category, buy_now: buyNow,
              initial_ask: initialAsk, duration: duration};
         createData('https://localhost:3000/products', data).then(value => {
             if(value){
-                alert('Listing was created.');
+                NotificationManager.success('Listing was created.');
+                //alert('Listing was created.');
             }else{
-                alert('Something went wrong. Try again.')
+                NotificationManager.error('Something went wrong. Try again.');
+                //alert('Something went wrong. Try again.')
                 console.log('Product was not listed. Most likely due to invalid data being provided')
             }
 
@@ -77,7 +82,7 @@ export const Sell = props => {
     }
 
     const handleClick = name => {
-        if(props.account){
+        if(props.authenticated){
             setDisplay('flex');
             setCategory(name);
         }else{
@@ -99,6 +104,7 @@ export const Sell = props => {
 
     return(
         <div id="sell-body">
+            <NotificationContainer />
             <div>
                 <div id="searchbar-heading"><h1>What product are you trying to list</h1></div>
                 <div id="search-bar">
@@ -107,9 +113,10 @@ export const Sell = props => {
             </div>
             <div>
                 <CategoryList categories={categories} handleClick={handleClick}/>
-                <div className="inline-display" onClick={addNewCategory}>
-                    <Category name="New Category" src="https://img.icons8.com/ios-glyphs/64/ffffff/plus-math.png"/>
-                </div>
+                {categories && <div className="inline-display" >
+                    <Category name="New Category" handleClick={addNewCategory}
+                    src="https://img.icons8.com/ios-glyphs/64/ffffff/plus-math.png"/>
+                </div>}
             </div>
                 <div id='result-container' style={{display: display}}>
                     <div id='sample-flex'>

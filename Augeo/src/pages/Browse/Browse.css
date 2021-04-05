@@ -1,0 +1,43 @@
+.browse-products{
+    min-height: 200px;
+}
+
+.browse-container{
+    margin-top: 50px;
+}
+
+.sortBy-container{
+    min-height: 100px;
+    border-radius: 5px;
+    width: 90%; /* doing this becuase app margin is too small */
+    margin: auto;
+    border: 0.5px solid lightgrey;
+    position: relative;
+    box-shadow: 1px 1px 5px #ddd;
+}
+
+.filter-form{
+    position: absolute;
+    left: 20px;
+}
+
+.sortBy-container select{
+    padding: 15px;
+    font-size: 15px;
+    border: 0.5px solid lightgrey;
+    box-shadow: 1px 1px 5px #ddd;
+    border-radius: 5px;
+}
+
+.sortBy-container select:focus{
+    outline: none;
+}
+
+.sortBy-container form{
+    top: 25%;
+}
+
+.sortBy-form{
+    position: absolute;
+    right: 20px;
+}

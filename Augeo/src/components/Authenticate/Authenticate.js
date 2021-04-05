@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { Link } from "react-router-dom";
 import { createData }  from '../../utilities/projectAPI';
 import './Authenticate.css';
 
@@ -16,11 +18,11 @@ export const Authenticate = (props) => {
   const canSubmit = () => {
     const validEmail = email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
     const validPassword = password.length >= 6;
-    const validFirstName = firstName.match(/^(?:[A-Za-z]+|)$/);
-    const validLastName = lastName.match(/^(?:[A-Za-z]+|)$/);
+    const validFirstName = firstName.match(/^(?:[A-Za-z]+|)$/) && firstName;
+    const validLastName = lastName.match(/^(?:[A-Za-z]+|)$/) && lastName;
 
     if(!errorMessage && checked && validEmail && validPassword && 
-      ((props.type === 'Login') || (validFirstName && validLastName ))){
+      ((props.type === 'Login') || (validFirstName && validLastName))){
       setValidData(true);
     }
     else{
@@ -52,7 +54,6 @@ export const Authenticate = (props) => {
       default:
         console.log('Error!')
     }
-    canSubmit();
   }
   
   const handleKeyPress = e => {
@@ -98,6 +99,7 @@ export const Authenticate = (props) => {
       default:
         setErrorMessage('');
     }
+    canSubmit();
   }
 
   const submitForm = e => {
@@ -105,19 +107,23 @@ export const Authenticate = (props) => {
     const url = (props.type === 'Register') ? 'https://localhost:3000/users' : `https://localhost:3000/users/session`;
     createData(url, data).then(value => {
       if(value){
-        props.setAccount(email);
-        //window.location.replace('/'); UNCOMMENT THIS ???!!!!
+        props.setAuthenticated(true);
       }
       else{
-        switch(props.type){
-          case 'Register':
-            setErrorMessage('The email address already exists!');
-            break;
-          case 'Login':
-            setErrorMessage('Your email address or password was entered incorrectly.');
-            break;
-          default:
-            setErrorMessage('Something went wrong. Try Again.');
+        if (typeof value === 'undefined'){
+            setErrorMessage('Server is currently down.')
+        }
+        else{
+          switch(props.type){
+            case 'Register':
+              setErrorMessage('The email address already exists!');
+              break;
+            case 'Login':
+              setErrorMessage('Your email address or password was entered incorrectly.');
+              break;
+            default:
+              setErrorMessage('Something went wrong. Try Again.');
+          }
         }
       }
       });
@@ -126,7 +132,7 @@ export const Authenticate = (props) => {
   
   useEffect(()=>{
     canSubmit();
-  }, [checked, errorMessage]);
+  }, [checked]);
 
 
   useEffect(() => {
@@ -138,7 +144,6 @@ export const Authenticate = (props) => {
 
   return (
     <div>
-      <div>
         <div><h1>{props.type}</h1></div>
         <div id="authenticate-container">
           <div id="authenticate-form">
@@ -166,18 +171,21 @@ export const Authenticate = (props) => {
               }
               <div className="terms-container cursor-pointer" onClick={()=>
                   {setChecked(!checked)}}>
-                <input type="checkbox" name="terms" id="termsCheckbox" onChange={() => setChecked(!checked)} checked={checked}/>
-                <span id="terms"> By signing {props.type === 'Register' ? 'up' : 'in'}, you agree to the Terms of Service and 
-                  Privacy Policy</span>
+                <input type="checkbox" name="terms" id="termsCheckbox" 
+                onChange={() => setChecked(!checked)} checked={checked}/>
+                <span className="small-font"> By signing {props.type === 'Register' ? 'up' : 'in'}
+                , you agree to the Terms of Service and Privacy Policy</span>
               </div>
             <input style={{cursor: validData ? 'pointer' : 'default', 
             backgroundColor: validData ? '#000' : 'grey'}} type="submit" 
             value={props.type} className="button" disabled={!validData}/>
+            {props.type === 'Register' ? <div className="small-font">
+              Already have an account? <Link to="/login">Sign in.</Link></div>
+            : <div className="small-font">Not a member? <Link to='/register'>Sign up</Link></div>}
           </form>
           </div>
         </div>
      </div>
-    </div>
   );
 }
 

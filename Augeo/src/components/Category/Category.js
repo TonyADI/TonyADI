@@ -9,7 +9,7 @@ export const Category = props => {
         <div className="category-container cursor-pointer" onClick={handleClick}>
             <div className="category-background"><img src={props.src} 
             alt={`${props.name} category`}/></div>
-            <div><span>{props.name}</span></div>
+            <div className="category-name"><span>{props.name}</span></div>
         </div>
     )
 }

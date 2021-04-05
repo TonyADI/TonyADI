@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { ProductList } from '../ProductList/ProductList';
 import { deleteData, retrieveData, updateData, createData } from '../../utilities/projectAPI';
 import './Account.css';
+
 export const Account = props => {
     const [passwordDisplay, setPasswordDisplay] = useState('none');
     const [password, setPassword] = useState('');
@@ -22,16 +24,15 @@ export const Account = props => {
     const signOut = () => {
         deleteData(`https://localhost:3000/users/session`).then(value => {
             if(value){
-                props.setAccount('');
-                window.location.replace('/');
+                props.setAuthenticated(false);
             }
             console.log('Logout was unsuccessful.')
         })
     }
 
-    // Not currently allowed to execute
+    // Not currently in use
     const deleteAccount = e => { 
-        const data = {email: props.account, password: password};
+        const data = {email: email, password: password};
         deleteData(`https://localhost:3000/users/${props.userId}`, data).then(value => {
             if(value){
                 signOut();
@@ -54,12 +55,12 @@ export const Account = props => {
                                                                             // Manage Account
 
     const modifyDetails = () => {
-        const data = {first_name: firstName, last_name: lastName, email: props.account};
+        const data = {first_name: firstName, last_name: lastName, email: email};
         if(firstName && lastName){
             if(firstName.match(/^(?:[A-Za-z]+|)$/) && lastName.match(/^(?:[A-Za-z]+|)$/)){
-                // come back to this
                 updateData('https://localhost:3000/users/details', data).then(value => {
                     if(value){
+                        NotificationManager.success('Your modifications have been saved!', '', 4000)
                         console.log('Data was modified');
                         setErrorMessage('');
                         setDisabled(true);
@@ -78,11 +79,11 @@ export const Account = props => {
         }
     }
     const updatePassword = () => {
-        const data = {email: props.account, password: password, new_password: newPassword};
+        const data = {email: email, password: password, new_password: newPassword};
         if(newPassword.length >= 6){
-            // come back to this
             updateData(`https://localhost:3000/users/password`, data).then(value => {
                 if(value){
+                    NotificationManager.success('Password successfully changed!')
                     console.log('Password successfully updated.');
                     setPassword(newPassword);
                     setPasswordDisplay('none');
@@ -102,6 +103,7 @@ export const Account = props => {
         const data = {email: email, password: password};
         createData(`https://localhost:3000/users/password`, data).then(value => {
             if(value){
+                NotificationManager.info('Password was good.')
                 console.log('Password was good.')
                 setAuthenticated(true);
                 setValidPassword(true);
@@ -232,6 +234,7 @@ export const Account = props => {
 
     return (
         <div className="account-container">
+            <NotificationContainer />
             <div><h1>Your Account</h1></div>
             <div>
                 <div className="accmenu-container">
@@ -270,7 +273,7 @@ export const Account = props => {
 
                 <div className="accmenu-container">
                     <div><h2>Bids</h2></div>
-                   <div><ProductList products={bids} account={props.account}/></div>
+                   <div><ProductList products={bids} authenticated={props.authenticated}/></div>
                 </div>
 
                 <div className="accmenu-container">
@@ -284,7 +287,9 @@ export const Account = props => {
                     <div>
                         <span><b>Delete Account</b></span>
                         <p>If you delete your account, you will not be able to recover it.</p>
-                        <div><button className="button">
+                        <div><button className="button" onClick={() => {
+                            NotificationManager.info('Currently Unavailable.');
+                        }}>
                             Delete Account</button></div>
                     </div>
                 </div>

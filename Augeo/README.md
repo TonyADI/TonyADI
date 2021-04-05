@@ -1,70 +1,29 @@
-# Getting Started with Create React App
+# Augeo
+Augeo is latin for enlarge/expand.
+The basis of the application is to allow users create products which other users can then bid on. 
+All the products in a category are assumed to be new and of the same model and type. No discrenpancies are allowed.
+The products also have a duration which gives a sense of urgency to the whole thing.
+The project is a long way from being complete but I would say there is some basic functionality in it. 
+The platform is supposed to be somewhat similar to a free market seeing as the users control the price of each category.
+I do not intend to make this an actual platform/website rather I am using it as a learning experience and a place to hone my skills.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Current Functionalities
+- Users can currently create an account, login, logout, create a product/listing, bid on products or outright buy them.
+- Form validation for register, login and create product.
+- The products have a timeout function which works by assigning the product to the user with the highest bid when the duration expires.
+- Retrieve products based on different search queries such as popular, recent, etc. 
+- Expired products or products that have been bought are not displayed to users in the home and browse page.
+- Users can view their listings, bids and purchases in the account page.
+- Users cannot view their own listings on the home or browse page.
+- Users can modify their personal details and password.
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Future Functionalities
+- New categories can be added but they would need to be authorized first.
+- The platform is also going to work based on its own currency. Seeing as users need to be able to bid as soon as possible and getting them to fill in their bank information while trying to bid for a product that ends in 5 seconds is not very user friendly.
+- An address table will be added as well as an address form in the account page.
+- Ability to send messages between the seller and the buyer of the product.
+- Archive a listing if it has no current bids, and archive a listing that has been purchased.
+- Delete expired bid records upon the users request.
+- A robust search functionality for a product list.
+- Improved security in server and backend.
+- A minimum and maximum constraint will be placed on the product prices.

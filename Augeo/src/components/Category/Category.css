@@ -1,11 +1,16 @@
 .category-container{
     display: inline-block;
     margin: 15px;
-    width: 116px;
+    width: 120px;
 }
 
 .category-background{
     border-radius: 50%;
     background-color: rgb(233, 245, 252);
     padding: 20px;
+}
+
+.category-container .category-name{
+    font-weight: 500;
+    width: 120px;
 }

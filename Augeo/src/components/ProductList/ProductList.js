@@ -67,7 +67,8 @@ export const ProductList = props => {
                             imageSrc={product.imageSrc} currentAsk={product.current_ask} 
                             initialAsk={product.initial_price} buyNow={product.buy_now} 
                             duration={product.duration} handleClick={props.handleClick} 
-                            account={props.account} disabled={props.disabled} setTransform={setTransform}
+                            authenticated={props.authenticated} disabled={props.disabled} setTransform={setTransform}
+                            key={product.id}
                             />
                         }) : <div>No Products to display</div> : <div>Server is currently down</div>}
                     </div>

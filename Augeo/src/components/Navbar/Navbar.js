@@ -11,17 +11,17 @@ export const Navbar = props => {
                         <li id="home">
                             <Link to="/">Augeo</Link>
                         </li>
-                        {!props.account && 
+                        {!props.authenticated && 
                         <li>
                             <Link to="/login">Login</Link>
                         </li>
                         }
-                        {!props.account && 
+                        {!props.authenticated && 
                             <li>
                                 <Link to="/register">Register</Link>
                             </li>
                         }
-                        {props.account &&
+                        {props.authenticated &&
                             <li>
                                 <Link to="/account">Account</Link>
                             </li>

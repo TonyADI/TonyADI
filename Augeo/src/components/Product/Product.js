@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { createData } from '../../utilities/projectAPI';
 import './Product.css'
 
-import hp from '../../utilities/images/xps.jfif';
-import iphone11 from '../../utilities/images/iphone11.png';
+//import hp from '../../utilities/images/xps.jfif';
+//import iphone11 from '../../utilities/images/iphone11.png';
 import watch from '../../utilities/images/gshock.jfif';
 import imageError from '../../utilities/images/image-error.png';
 
@@ -25,7 +25,11 @@ export const Product = props => {
     const handleChange = e => {
         setValidAsk(parseInt(e.target.value));
     }
-    
+
+    const iphone11 = 'https://images.unsplash.com/photo-1574755297613-7b2c' +
+    '5fee60ce?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=2392&q=80';
+    const hp = 'https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?ixid=MXwxM' 
+    + 'jA3fDF8MHxzZWFyY2h8Mzl8fGxhcHRvcHxlbnwwfDB8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=60';
     const handleImageChange = () => {
         switch(props.name){
             case 'HP Spectre x360':
@@ -46,7 +50,7 @@ export const Product = props => {
         // More cases will be added to handle archiving products.
         switch(e.target.name){
             case 'Bid':
-                if(props.account){
+                if(props.authenticated){
                     props.setTransform(); // Reset product list transform style
                     setDisplay('block');
                 }
@@ -80,17 +84,20 @@ export const Product = props => {
 
     const placeBid = e => {
         if(validAsk > currentAsk && validAsk < props.buyNow){
+            /*
             createData(`https://localhost:3000/products/${props.id}/?action=bid`, data)
             .then(value => {
                if(value){
+                   */
                     console.log('Bid was accepted');
-                    setDisplay('none')
+                    setDisplay('none');
                     setCurrentAsk(validAsk);
-                }
+               /* }
                 else{
-                    alert('Bid could not be placed. Please refresh.');
-                }
-            });
+                    NotificationManager.warning('Bid could not be placed. Please refresh.')
+                   // alert('Bid could not be placed. Please refresh.');
+                }*/
+           // });
         }
         else if(validAsk === props.buyNow){
             createData(`https://localhost:3000/products/${props.id}/?action=sell`, data)

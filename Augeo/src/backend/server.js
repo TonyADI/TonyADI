@@ -42,6 +42,8 @@ app.use((req, res, next) => {
         }
         catch(error){
             console.log(error);
+            // Assuming jwt has expired
+            res.clearCookie('AccessToken');
         }
 
     }
@@ -58,7 +60,7 @@ const checkAuth = (req, res, next) => {
     }
     else{
         console.log('User is not authenticated');
-        res.sendStatus(401);
+        res.sendStatus(401);// or redirect to login page?
     }
 }
 
@@ -94,7 +96,7 @@ app.post('/users', (req, res) => {
                 }
                 else{
                     console.log('Account Created');
-                    const accessToken = jwt.sign({id: result.insertId}, accessTokenSecret);
+                    const accessToken = jwt.sign({id: result.insertId}, accessTokenSecret, {expiresIn: '24h'});
                     res.cookie('AccessToken', accessToken);
                     res.sendStatus(201);
                 }
@@ -125,7 +127,7 @@ app.post('/users/session', (req, res) => {
                 if (error) throw error;
                 if(result.length){
                     console.log('Account found, password verification successful'); 
-                    const accessToken = jwt.sign({id: result[0].id}, accessTokenSecret);
+                    const accessToken = jwt.sign({id: result[0].id}, accessTokenSecret, {expiresIn: '24h'});
                     res.cookie('AccessToken', accessToken);
                     res.sendStatus(204);
                 }
@@ -292,7 +294,6 @@ app.post('/products/:productId', (req, res, next) => {
         connection.query(`UPDATE product SET sold = true WHERE id = ? AND duration <= (SELECT current_timestamp()) 
         AND sold = false;`, [req.params.productId], (error, result) => {
             if (error) throw error;
-            console.log(result)
             if(result.changedRows){
                 console.log('Product record successfully updated');
                 connection.query(`INSERT INTO sale (user_id, product_id) VALUES 
@@ -311,22 +312,39 @@ app.post('/products/:productId', (req, res, next) => {
     next();
 })
 
+
 // Updates product records as well as creates purchase and bid records
 app.post('/products/:productId', checkAuth, (req, res) => {
     switch(req.query.action){
         case 'bid':
             // Sets the current ask for product and creates bid record
             connection.query(`UPDATE PRODUCT SET current_ask = ? WHERE id = ? AND 
-            ? > current_ask AND ? < buy_now AND ? <> user_id;`, 
+            ? > current_ask AND ? > initial_price AND ? < buy_now AND ? <> user_id;`, 
             [req.body.current_ask, req.params.productId, 
-                req.body.current_ask, req.body.current_ask, req.user], (error, result) => {
+                req.body.current_ask, req.body.current_ask, req.body.current_ask, req.user], (error, result) => {
                 if (error) throw error;
                 if(result.changedRows){
                     console.log('Product record successfully updated.');
+                    // Create bid record for the authenticated user
                     connection.query(`INSERT INTO bid (value, user_id, product_id) VALUES (?, 
                     ?, ?);`, [req.body.current_ask, req.user, req.params.productId], (error, result) => {
                         if (error) throw error;
                         console.log('Bid record successfully created.');
+                        // Check if there is a previous bid record for the authenticated user on the specific product
+                        connection.query(`SELECT * FROM bid where product_id = ? and user_id = ?;`, 
+                        [req.params.productId, req.user], (error, result) => {
+                            if (error) throw error;
+                            if(result.length > 1){
+                                console.log('More than one bid record exists for the same product and user.')
+                                // Delete previous bid record of the same product from the same user
+                                connection.query(`DELETE FROM bid where product_id = ? and user_id = ? order by id asc limit 1;`,
+                                 [req.params.productId, req.user], (error, result) => {
+                                    if (error) throw error;
+                                    console.log('Previous bid record deleted');
+                                })
+                            }
+                        })
+                        
                     })
                     res.sendStatus(201);
                 }
@@ -336,7 +354,7 @@ app.post('/products/:productId', checkAuth, (req, res) => {
             })
             break;
         case 'sell':
-            // Sets the sold boolean to true and creates sale record
+            // Sets the sold boolean to true and creates a sale record
             connection.query(`UPDATE product SET sold = true, current_ask = ? 
                 WHERE id = ? AND ? = buy_now AND sold = false AND ? <> user_id;`, 
                 [req.body.current_ask, req.params.productId, req.body.current_ask, req.user], 
@@ -357,9 +375,6 @@ app.post('/products/:productId', checkAuth, (req, res) => {
                     }   
                 })
                 break;
-        case 'timeout':
-            
-            break;
         default:
             console.log(`The query does not exist`);
     };
@@ -381,12 +396,14 @@ app.get('/products', (req, res) => {
             })
             break;
         case 'trending':
-            // Fetch product with the most bids, not properly implemented.
+            // Fetch product records with the most bids in the latest 30 bid records.
             connection.query(`SELECT * FROM Product WHERE duration > (select current_timestamp()) AND 
-            sold = false AND user_id <> ? AND category_name = 
-            (SELECT category_name from 
-                (SELECT category_name, COUNT(*) FROM Product 
-                WHERE current_ask > 0 GROUP BY category_name ORDER BY 2 DESC LIMIT 1) as name) ORDER BY duration;`, [req.user],
+            sold = false AND user_id <> ? AND category_name = (SELECT category_name from
+            (SELECT count(product.category_name), product.category_name from product 
+            inner join 
+            (SELECT * FROM bid order by bid.id desc limit 30) as bid where bid.product_id = product.id 
+            group by product.category_name order by 1 desc limit 1)
+            as category_name);`, [req.user],
             (error, result) => {
                 if (error) throw error;
                 if(result.length) console.log('Product records successfully retrieved.');

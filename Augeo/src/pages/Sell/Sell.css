@@ -52,4 +52,9 @@
     bottom: 0;
     left: 0;
     margin: 0px;
+    border-radius: 0px;
+}
+
+#form-flex .input-container span{
+    font-weight: 500;
 }

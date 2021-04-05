@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { Account } from '../Account/Account';
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import { Account } from '../../pages/Account/Account';
 import { Authenticate } from '../Authenticate/Authenticate';
-import { Browse } from '../Browse/Browse';
+import { Browse } from '../../pages/Browse/Browse';
 import { Footer } from '../Footer/Footer';
-import { Home } from '../Home/Home';
+import { Home } from '../../pages/Home/Home';
+import { Landing } from '../../pages/Landing/Landing';
 import { Navbar } from '../Navbar/Navbar';
-import { Sell } from '../Sell/Sell';
+import { NotFound } from '../../pages/NotFound/NotFound';
+import { Sell } from '../../pages/Sell/Sell';
 import { retrieveData } from '../../utilities/projectAPI';
 import './App.css';
 
+
 const App = () => {
-  const [account, setAccount] = useState('');
+  const [authenticated, setAuthenticated] = useState(true);
   const verifyAuthentication = () => {
     retrieveData('https://localhost:3000/verify-authentication').then(data => {
       if(data){
-        setAccount(data.id);
+        setAuthenticated(true);
       }
       console.log('User is not logged in')
     })
@@ -27,26 +30,36 @@ const App = () => {
   return (
     <Router>
       <div id="app-body">
-        <Navbar account={account}/>
+        <Navbar authenticated={authenticated}/>
         <Switch>
           <Route path="/browse">
-            <Browse account={account}/>
+              <Browse authenticated={authenticated}/>
           </Route>
           <Route path="/sell">
-            <Sell account={account}/>
+              <Sell authenticated={authenticated}/>
           </Route>
-          {!account && <Route path="/register">
-            <Authenticate type='Register' setAccount={setAccount}/>
-          </Route>}
-          {!account && <Route path="/login">
-            <Authenticate type='Login' setAccount={setAccount}/>
-          </Route>}
-          {account && <Route path="/account">
-             <Account account={account} setAccount={setAccount}/>
-          </Route>}
-          <Route path="/">
-            <Home account={account}/>
+          <Route path="/register">
+              {!authenticated ? 
+              <Authenticate type='Register' setAuthenticated={setAuthenticated}/>: 
+              <Redirect to="/" />}
           </Route>
+          <Route path="/login">
+              {!authenticated ? 
+              <Authenticate type='Login' setAuthenticated={setAuthenticated}/> : 
+              <Redirect to="/" />}
+          </Route>
+          <Route path="/account">
+              {authenticated ? 
+              <Account authenticated={authenticated} setAuthenticated={setAuthenticated}/> : 
+              <Redirect to="/login" />}
+          </Route>
+          <Route path="/made-for-you">
+              <Landing />
+          </Route>
+          <Route exact path="/">
+              <Home authenticated={authenticated}/>
+          </Route>
+          <Route component={NotFound}/>
         </Switch>
         <Footer />
       </div>

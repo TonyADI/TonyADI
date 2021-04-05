@@ -31,9 +31,24 @@ export const Browse = props => {
     }, [])
 
     return (
-        <div>
-            <div className="jumbo full-width">
-                <div><h1 className="jumbo-header">Placeholder</h1></div>
+        <div className="browse-container">
+            <div className="sortBy-container">
+                <span></span>
+                <form className="filter-form">
+                    <select className="cursor-pointer" id="filter" name="filter">
+                        <option value="max">Max Buy-Now</option>
+                    </select>
+                    {/*<input type="submit"/>*/}
+                </form>
+                <form className="sortBy-form">
+                    <select className="cursor-pointer" id="order-by" name="order-by">
+                        <option value="duration">Duration</option>
+                        <option value="current_ask">Current Ask</option>
+                        <option value="initial_price">Initial Ask</option>
+                        <option value="buy_now">Buy Now</option>
+                    </select>
+                    {/*<input type="submit"/>*/}
+                </form>
             </div>
             <div>
                 <div><h1>Categories</h1></div>
@@ -42,7 +57,7 @@ export const Browse = props => {
             <div>
                 <div><h2>{category}</h2></div>
                 <div className="browse-products">
-                    {category && <ProductList products={products} account={props.account}/>}</div>
+                    {category && <ProductList products={products} authenticated={props.authenticated}/>}</div>
             </div>
         </div>
     )

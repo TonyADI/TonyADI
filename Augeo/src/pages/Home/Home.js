@@ -12,11 +12,11 @@ export const Home = props => {
 
     // Dummy products to show product functionality in case servers are down.
     const countDownDate = new Date("Feb 22, 2021 15:58:25").getTime();
-    const countDownDate2 = new Date("Mar 30, 2021 10:49:25").getTime();
+    const countDownDate2 = new Date("Apr 30, 2021 10:49:25").getTime();
     const countDownDate3 = new Date("May 29, 2021 20:59:25").getTime();
-    const product = {category_name: 'HP Spectre x360', initial_price: 1840, current_ask: 0, buy_now: 2500, duration: countDownDate}
-    const product2 = {category_name: 'iPhone 11', initial_price: 670, current_ask:245, buy_now: 1600, duration: countDownDate2}
-    const product3 = {category_name: 'G-Shock', initial_price: 70, current_ask:0, buy_now: 200, duration: countDownDate3}
+    const product = { category_name: 'HP Spectre x360', initial_price: 1840, current_ask: 0, buy_now: 2500, duration: countDownDate}
+    const product2 = { category_name: 'iPhone 11', initial_price: 670, current_ask:245, buy_now: 1600, duration: countDownDate2}
+    const product3 = { category_name: 'G-Shock', initial_price: 70, current_ask:0, buy_now: 200, duration: countDownDate3}
     const dummy = [product, product2, product3,product, product2, product3,
         product, product, product2, product3,product, product2]
 
@@ -67,23 +67,31 @@ export const Home = props => {
     return(
         <div className="home-container">
             <div className="jumbo full-width">
-                <div><h1 className="jumbo-header">Placeholder</h1></div>
+                <div>
+                    <h1 className="jumbo-header"><i>Made for you</i></h1>
+                    <span>Start shopping/selling!</span>
+                    </div>
+            </div>
+            <div className="large-text-container">
+                <p className="large-text">If you are looking for a platform to resell your product in a relatively free market, or
+                    trying to find a bargain on one then look no further!
+                </p>
             </div>
             <div>
                 <div><h1>Dummy Products</h1></div>
-                <div><ProductList products={dummy} account={props.account}/></div>
+                <div><ProductList products={dummy} authenticated={props.authenticated}/></div>
             </div>
             <div>
                 <div><h1>Featured Product</h1></div>
-                <div><ProductList products={featured} account={props.account}/></div>
+                <div><ProductList products={featured} authenticated={props.authenticated}/></div>
             </div>
             <div>
                 <div><h1>Most Popular</h1></div>
-                <div><ProductList products={popular} account={props.account}/></div>
+                <div><ProductList products={popular} authenticated={props.authenticated}/></div>
             </div>
             <div>
                 <div><h1>Trending</h1></div>
-                <div><ProductList products={trending} account={props.account}/></div>
+                <div><ProductList products={trending} authenticated={props.authenticated}/></div>
             </div>    
             <div className="aside-container">
                 <div className="collection-text">
@@ -92,11 +100,11 @@ export const Home = props => {
             </div>
             <div>
                 <div><h1>Latest Category</h1></div>
-                <div><ProductList products={latest} account={props.account}/></div>
+                <div><ProductList products={latest} authenticated={props.authenticated}/></div>
             </div>
             <div>
                 <div><h1>Recent Bids</h1></div>
-                <div><ProductList products={recentBids} account={props.account}/></div>
+                <div><ProductList products={recentBids} authenticated={props.authenticated}/></div>
             </div>
         </div>
     )
